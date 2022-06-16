@@ -50,7 +50,6 @@ function pointermove_handler(ev) {
     const dx = pinch_ev_cache[0].clientX - pinch_ev_cache[1].clientX;
     const dy = pinch_ev_cache[0].clientY - pinch_ev_cache[1].clientY;
     const curDiff = Math.sqrt(dx * dx + dy * dy);
-    const step = zoom.clientWidth / 10;
 
     if (pinch_prev_dist > 0) {
       if (curDiff > pinch_prev_dist) {
