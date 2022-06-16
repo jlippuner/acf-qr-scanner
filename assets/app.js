@@ -73,7 +73,7 @@ function pointerup_handler(ev) {
   // Remove this pointer from the cache
   for (var i = 0; i < pinch_ev_cache.length; i++) {
     if (pinch_ev_cache[i].pointerId == ev.pointerId) {
-      pinch_prev_dist.splice(i, 1);
+      pinch_ev_cache.splice(i, 1);
       break;
     }
   }
