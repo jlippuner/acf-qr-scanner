@@ -419,19 +419,15 @@ window.addEventListener("DOMContentLoaded", function () {
         const capabilities = track.getCapabilities();
         const settings = track.getSettings();
 
+        console.log(capabilities);
+        console.log(settings);
+
         // Check whether zoom is supported or not.
         if (!("zoom" in settings)) {
           console.log("Zoom is not supported by " + track.label);
         } else {
           // set zoom to 1.5x
-          console.log(
-            "Zoom support, ",
-            capabilities.zoo.min,
-            " to ",
-            capabilities.zoom.max,
-            " with step of ",
-            capabilities.zoom.step
-          );
+          console.log("Zoom support");
         }
 
         video.srcObject = stream;
