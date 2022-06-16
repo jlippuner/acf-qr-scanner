@@ -445,6 +445,7 @@ window.addEventListener("DOMContentLoaded", function () {
           // The distance between the two pointers has decreased
           current_zoom -= zoom_step;
         }
+        apply_zoom();
       }
 
       // Cache the distance for the next move event
@@ -508,19 +509,17 @@ window.addEventListener("DOMContentLoaded", function () {
         // Check whether zoom is supported or not.
         if (!("zoom" in settings)) {
           console.log("Zoom is not supported by " + video_track.label);
-          this.document.getElementById("zoom_val").innerText =
-            "Zoom: " + current_zoom + "x";
         } else {
           // Install event handlers for the pointer target
-          video.onpointerdown = pointerdown_handler;
-          video.onpointermove = pointermove_handler;
+          video.addEventListener("pointerdown", pointerdown_handler);
+          video.addEventListener("pointermove", pointermove_handler);
 
           // Use same handler for pointer{up,cancel,out,leave} events since
           // the semantics for these events - in this app - are the same.
-          video.onpointerup = pointerup_handler;
-          video.onpointercancel = pointerup_handler;
-          video.onpointerout = pointerup_handler;
-          video.onpointerleave = pointerup_handler;
+          video.addEventListener("pointerup", pointerup_handler);
+          video.addEventListener("pointercancel", pointerup_handler);
+          video.addEventListener("pointerout", pointerup_handler);
+          video.addEventListener("pointerleave", pointerup_handler);
 
           apply_zoom();
         }
