@@ -91,14 +91,14 @@ var current_zoom = 1.5; // start at 1.5x
 function apply_zoom() {
   const capabilities = video_track.getCapabilities();
   try {
-    zoom_step = 0.1 * capabilities.zoom.step;
+    zoom_step = capabilities.zoom.step;
     current_zoom = Math.min(
       capabilities.zoom.max,
       Math.max(capabilities.zoom.min, current_zoom)
     );
     video_track.applyConstraints({ advanced: [{ zoom: current_zoom }] });
     this.document.getElementById("zoom_val").innerText =
-      "Zoom: " + current_zoom + "x";
+      "Zoom: " + current_zoom.toFixed(1) + "x";
   } catch (ex) {
     console.log("Zoom not supported: ", ex);
   }
