@@ -5,6 +5,8 @@ body {
 
 #camera,
 #zoom_overlay {
+  touch-action: none;
+  
   position: fixed;
   top: 30%;
   left: 50%;
