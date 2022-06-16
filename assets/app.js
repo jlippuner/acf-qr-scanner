@@ -426,7 +426,7 @@ window.addEventListener("DOMContentLoaded", function () {
           // set zoom to 1.5x
           let zoom_val = Math.min(
             capabilities.zoom.max,
-            Math.max(capabilities.zom.min, 1.5)
+            Math.max(capabilities.zoom.min, 1.5)
           );
           track.applyConstraints({ advanced: [{ zoom: zoom_val }] });
         }
