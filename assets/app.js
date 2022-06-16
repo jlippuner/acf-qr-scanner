@@ -19,14 +19,14 @@ var pinch_prev_dist = -1;
 var pinch_ev_cache = new Array();
 
 function pointerdown_handler(ev) {
-  console.log("pointer down: ", ev);
+  // console.log("pointer down: ", ev);
   // The pointerdown event signals the start of a touch interaction.
   // This event is cached to support 2-finger gestures
   pinch_ev_cache.push(ev);
 }
 
 function pointermove_handler(ev) {
-  console.log("pointer move: ", ev);
+  // console.log("pointer move: ", ev);
   // This function implements a 2-pointer horizontal pinch/zoom gesture.
   //
   // If the distance between the two pointers has increased (zoom in),
@@ -69,7 +69,7 @@ function pointermove_handler(ev) {
 }
 
 function pointerup_handler(ev) {
-  console.log("pointer up: ", ev);
+  // console.log("pointer up: ", ev);
   // Remove this pointer from the cache
   for (var i = 0; i < pinch_ev_cache.length; i++) {
     if (pinch_ev_cache[i].pointerId == ev.pointerId) {
@@ -509,12 +509,12 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("about").style.display = "none";
 
         video_track = stream.getVideoTracks()[0];
-        // const settings = video_track.getSettings();
+        const settings = video_track.getSettings();
 
         // Check whether zoom is supported or not.
-        // if (!("zoom" in settings)) {
-        //   console.log("Zoom is not supported by " + video_track.label);
-        // } else {
+        if (!("zoom" in settings)) {
+          console.log("Zoom is not supported by " + video_track.label);
+        } else {
           // Install event handlers for the pointer target
           zoom.addEventListener("pointerdown", pointerdown_handler);
           zoom.addEventListener("pointermove", pointermove_handler);
@@ -526,10 +526,8 @@ window.addEventListener("DOMContentLoaded", function () {
           zoom.addEventListener("pointerout", pointerup_handler);
           zoom.addEventListener("pointerleave", pointerup_handler);
 
-          console.log("pinch events set");
-
           apply_zoom();
-        // }
+        }
 
         video.srcObject = stream;
         video.oncanplay = function () {
