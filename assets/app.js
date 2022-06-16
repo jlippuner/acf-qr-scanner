@@ -404,12 +404,14 @@ window.addEventListener("DOMContentLoaded", function () {
   var pinch_ev_cache = new Array();
 
   function pointerdown_handler(ev) {
+    console.log("pointer down: ", ev);
     // The pointerdown event signals the start of a touch interaction.
     // This event is cached to support 2-finger gestures
     pinch_ev_cache.push(ev);
   }
 
   function pointermove_handler(ev) {
+    console.log("pointer move: ", ev);
     // This function implements a 2-pointer horizontal pinch/zoom gesture.
     //
     // If the distance between the two pointers has increased (zoom in),
@@ -451,6 +453,7 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function pointerup_handler(ev) {
+    console.log("pointer up: ", ev);
     // Remove this pointer from the cache
     for (var i = 0; i < pinch_ev_cache.length; i++) {
       if (pinch_ev_cache[i].pointerId == ev.pointerId) {
@@ -477,6 +480,8 @@ window.addEventListener("DOMContentLoaded", function () {
       Math.max(capabilities.zoom.min, current_zoom)
     );
     video_track.applyConstraints({ advanced: [{ zoom: current_zoom }] });
+    this.document.getElementById("zoom").innerText =
+      "Zoom: " + current_zoom + "x";
   }
 
   // init video stream
