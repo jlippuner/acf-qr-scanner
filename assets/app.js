@@ -437,11 +437,11 @@ window.addEventListener("DOMContentLoaded", function () {
       if (pinch_prev_dist > 0) {
         if (curDiff > pinch_prev_dist) {
           // The distance between the two pointers has increased
-          current_zoom += capabilities.zoom.step;
+          current_zoom += zoom_step;
         }
         if (curDiff < pinch_prev_dist) {
           // The distance between the two pointers has decreased
-          current_zoom -= capabilities.zoom.step;
+          current_zoom -= zoom_step;
         }
       }
 
@@ -465,9 +465,13 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  var video_track = null;
+  var zoom_step = 0.0;
   var current_zoom = 1.5; // start at 1.5x
 
   function apply_zoom() {
+    const capabilities = video_track.getCapabilities();
+    zoom_step = capabilities.zoom.step;
     current_zoom = Math.min(
       capabilities.zoom.max,
       Math.max(capabilities.zoom.min, current_zoom)
@@ -493,9 +497,8 @@ window.addEventListener("DOMContentLoaded", function () {
       .then(function (stream) {
         document.getElementById("about").style.display = "none";
 
-        var [track] = stream.getVideoTracks();
-        var capabilities = track.getCapabilities();
-        const settings = track.getSettings();
+        video_track = stream.getVideoTracks()[0];
+        const settings = video_track.getSettings();
 
         // Check whether zoom is supported or not.
         if (!("zoom" in settings)) {
