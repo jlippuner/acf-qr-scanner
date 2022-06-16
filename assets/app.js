@@ -397,6 +397,84 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // pinch zoom implementation based on
+  // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Pinch_zoom_gestures
+
+  var pinch_prev_dist = -1;
+  var pinch_ev_cache = new Array();
+
+  function pointerdown_handler(ev) {
+    // The pointerdown event signals the start of a touch interaction.
+    // This event is cached to support 2-finger gestures
+    pinch_ev_cache.push(ev);
+  }
+
+  function pointermove_handler(ev) {
+    // This function implements a 2-pointer horizontal pinch/zoom gesture.
+    //
+    // If the distance between the two pointers has increased (zoom in),
+    // the target element's background is changed to "pink" and if the
+    // distance is decreasing (zoom out), the color is changed to "lightblue".
+    //
+    // This function sets the target element's border to "dashed" to visually
+    // indicate the pointer's target received a move event.
+
+    // Find this event in the cache and update its record with this event
+    for (var i = 0; i < pinch_ev_cache.length; i++) {
+      if (ev.pointerId == pinch_ev_cache[i].pointerId) {
+        pinch_ev_cache[i] = ev;
+        break;
+      }
+    }
+
+    // If two pointers are down, check for pinch gestures
+    if (pinch_ev_cache.length == 2) {
+      // Calculate the distance between the two pointers
+      const dx = pinch_ev_cache[0].clientX - pinch_ev_cache[1].clientX;
+      const dy = pinch_ev_cache[0].clientY - pinch_ev_cache[1].clientY;
+      const curDiff = Math.sqrt(dx * dx + dy * dy);
+
+      if (pinch_prev_dist > 0) {
+        if (curDiff > pinch_prev_dist) {
+          // The distance between the two pointers has increased
+          current_zoom += capabilities.zoom.step;
+        }
+        if (curDiff < pinch_prev_dist) {
+          // The distance between the two pointers has decreased
+          current_zoom -= capabilities.zoom.step;
+        }
+      }
+
+      // Cache the distance for the next move event
+      pinch_prev_dist = curDiff;
+    }
+  }
+
+  function pointerup_handler(ev) {
+    // Remove this pointer from the cache
+    for (var i = 0; i < pinch_ev_cache.length; i++) {
+      if (pinch_ev_cache[i].pointerId == ev.pointerId) {
+        evCache.splice(i, 1);
+        break;
+      }
+    }
+
+    // If the number of pointers down is less than two then reset diff tracker
+    if (pinch_ev_cache.length < 2) {
+      pinch_prev_dist = -1;
+    }
+  }
+
+  var current_zoom = 1.5; // start at 1.5x
+
+  function apply_zoom() {
+    current_zoom = Math.min(
+      capabilities.zoom.max,
+      Math.max(capabilities.zoom.min, current_zoom)
+    );
+    track.applyConstraints({ advanced: [{ zoom: current_zoom }] });
+  }
+
   // init video stream
   let currentDeviceId;
   function initVideoStream() {
@@ -415,20 +493,26 @@ window.addEventListener("DOMContentLoaded", function () {
       .then(function (stream) {
         document.getElementById("about").style.display = "none";
 
-        const [track] = stream.getVideoTracks();
-        const capabilities = track.getCapabilities();
+        var [track] = stream.getVideoTracks();
+        var capabilities = track.getCapabilities();
         const settings = track.getSettings();
 
         // Check whether zoom is supported or not.
         if (!("zoom" in settings)) {
           console.log("Zoom is not supported by " + track.label);
         } else {
-          // set zoom to 1.5x
-          let zoom_val = Math.min(
-            capabilities.zoom.max,
-            Math.max(capabilities.zoom.min, 1.5)
-          );
-          track.applyConstraints({ advanced: [{ zoom: zoom_val }] });
+          // Install event handlers for the pointer target
+          video.onpointerdown = pointerdown_handler;
+          video.onpointermove = pointermove_handler;
+
+          // Use same handler for pointer{up,cancel,out,leave} events since
+          // the semantics for these events - in this app - are the same.
+          video.onpointerup = pointerup_handler;
+          video.onpointercancel = pointerup_handler;
+          video.onpointerout = pointerup_handler;
+          video.onpointerleave = pointerup_handler;
+
+          apply_zoom();
         }
 
         video.srcObject = stream;
