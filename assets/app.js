@@ -508,6 +508,8 @@ window.addEventListener("DOMContentLoaded", function () {
         // Check whether zoom is supported or not.
         if (!("zoom" in settings)) {
           console.log("Zoom is not supported by " + video_track.label);
+          this.document.getElementById("zoom_val").innerText =
+            "Zoom: " + current_zoom + "x";
         } else {
           // Install event handlers for the pointer target
           video.onpointerdown = pointerdown_handler;
