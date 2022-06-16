@@ -126,8 +126,7 @@ body {
 }
 
 #flipCamera,
-#reload,
-#zoom_val {
+#reload {
   position: absolute;
   background-color: #eee;
 }
@@ -147,9 +146,12 @@ body {
 }
 
 #zoom_val {
+  position: absolute;
   display: block;
 
-  bottom: 5vmin;
+  font-size: large;
+
+  bottom: 20px;
   left: 5vmin;
 }
 

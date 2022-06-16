@@ -50,6 +50,7 @@ function pointermove_handler(ev) {
     const dx = pinch_ev_cache[0].clientX - pinch_ev_cache[1].clientX;
     const dy = pinch_ev_cache[0].clientY - pinch_ev_cache[1].clientY;
     const curDiff = Math.sqrt(dx * dx + dy * dy);
+    const step = zoom.clientWidth / 10;
 
     if (pinch_prev_dist > 0) {
       if (curDiff > pinch_prev_dist) {
@@ -91,7 +92,7 @@ var current_zoom = 1.5; // start at 1.5x
 function apply_zoom() {
   const capabilities = video_track.getCapabilities();
   try {
-    zoom_step = capabilities.zoom.step;
+    zoom_step = 0.1 * capabilities.zoom.step;
     current_zoom = Math.min(
       capabilities.zoom.max,
       Math.max(capabilities.zoom.min, current_zoom)
