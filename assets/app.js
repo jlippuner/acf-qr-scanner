@@ -91,7 +91,7 @@ var current_zoom = 1.5; // start at 1.5x
 function apply_zoom() {
   const capabilities = video_track.getCapabilities();
   try {
-    zoom_step = capabilities.zoom.step;
+    zoom_step = 0.25 * capabilities.zoom.step;
     current_zoom = Math.min(
       capabilities.zoom.max,
       Math.max(capabilities.zoom.min, current_zoom)
