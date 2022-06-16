@@ -480,7 +480,7 @@ window.addEventListener("DOMContentLoaded", function () {
       Math.max(capabilities.zoom.min, current_zoom)
     );
     video_track.applyConstraints({ advanced: [{ zoom: current_zoom }] });
-    this.document.getElementById("zoom").innerText =
+    this.document.getElementById("zoom_val").innerText =
       "Zoom: " + current_zoom + "x";
   }
 
