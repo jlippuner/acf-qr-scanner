@@ -476,7 +476,7 @@ window.addEventListener("DOMContentLoaded", function () {
       capabilities.zoom.max,
       Math.max(capabilities.zoom.min, current_zoom)
     );
-    track.applyConstraints({ advanced: [{ zoom: current_zoom }] });
+    video_track.applyConstraints({ advanced: [{ zoom: current_zoom }] });
   }
 
   // init video stream
@@ -502,7 +502,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
         // Check whether zoom is supported or not.
         if (!("zoom" in settings)) {
-          console.log("Zoom is not supported by " + track.label);
+          console.log("Zoom is not supported by " + video_track.label);
         } else {
           // Install event handlers for the pointer target
           video.onpointerdown = pointerdown_handler;
