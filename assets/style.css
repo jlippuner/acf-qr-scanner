@@ -45,21 +45,32 @@ body {
   flex-direction: column;
 }
 
+#res_cont {
+  display: none;
+}
+
 #event_cont,
-#tosync {
-  padding: 20px 0;
+#status {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#status {
+  display: flex;
+  justify-content: space-between;
 }
 
 #event {
   display: table-cell;
-  width: 60%;
+  width: 75%;
   font-size: large;
 }
 
 #res_name,
 #res_entry {
   font-weight: bold;
-  line-height: 200%;
+  line-height: 125%;
 }
 
 .grow {
@@ -73,16 +84,12 @@ body {
 }
 
 #res_name {
-  font-size: xx-large;
+  font-size: x-large;
 }
 
 #res_entry {
   padding: 25px 0;
   font-size: xx-large;
-}
-
-#res_cont {
-  display: none;
 }
 
 .past {
@@ -147,7 +154,7 @@ body {
   left: 5vmin;
 }
 
-#zoom_val {
+/* #zoom_val {
   position: absolute;
   display: block;
 
@@ -155,7 +162,7 @@ body {
 
   bottom: 20px;
   left: 5vmin;
-}
+} */
 
 #about {
   background-color: white;
