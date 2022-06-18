@@ -375,8 +375,10 @@ window.addEventListener("DOMContentLoaded", function () {
     if (!loading && res !== false) {
       // vibrate only if new result
       if (res != curr_result) {
-        // vibration is not supported on Edge, IE, Opera and Safari
-        navigator.vibrate(200);
+        try {
+          // vibration is not supported on Edge, IE, Opera and Safari
+          navigator.vibrate(200);
+        } catch {}
         curr_result = res;
 
         // decide what to do with the result
