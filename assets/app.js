@@ -511,8 +511,8 @@ window.addEventListener("DOMContentLoaded", function () {
       video: {},
     };
     config.video = currentDeviceId
-      ? { deviceId: currentDeviceId }
-      : { facingMode: "environment" };
+      ? { zoom: true, deviceId: currentDeviceId }
+      : { zoom: true, facingMode: "environment" };
 
     stopStream();
 
@@ -544,6 +544,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
         video.srcObject = stream;
         video.oncanplay = function () {
+          video.play()
           flipCameraButton.disabled = false;
           calculateSquare();
           scanCode();
