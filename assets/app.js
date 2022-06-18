@@ -511,8 +511,8 @@ window.addEventListener("DOMContentLoaded", function () {
       video: {},
     };
     config.video = currentDeviceId
-      ? { zoom: true, deviceId: currentDeviceId }
-      : { zoom: true, facingMode: "environment" };
+      ? { deviceId: currentDeviceId }
+      : { facingMode: "environment" };
 
     stopStream();
 
