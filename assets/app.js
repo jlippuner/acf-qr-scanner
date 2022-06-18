@@ -370,15 +370,16 @@ window.addEventListener("DOMContentLoaded", function () {
 
   function process_qr(e) {
     const res = e.data;
+    console.log("process_qr: ", res);
 
     // open a dialog with the result if found
     if (!loading && res !== false) {
       // vibrate only if new result
       if (res != curr_result) {
-        try {
+        if (typeof navigator.vibrate === "function") {
           // vibration is not supported on Edge, IE, Opera and Safari
           navigator.vibrate(200);
-        } catch {}
+        }
         curr_result = res;
 
         // decide what to do with the result
