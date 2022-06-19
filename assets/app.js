@@ -559,6 +559,7 @@ window.addEventListener("DOMContentLoaded", function () {
           zoom.addEventListener("pointerout", pointerup_handler);
           zoom.addEventListener("pointerleave", pointerup_handler);
 
+          zoom.style.touchAction = "none";
           apply_zoom();
         }
 
