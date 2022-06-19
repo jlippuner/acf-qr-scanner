@@ -332,7 +332,7 @@ window.addEventListener("DOMContentLoaded", function () {
       ratio = video.videoWidth / video.clientWidth;
     }
 
-    let snapshotSize = overlay.clientWidth * ratio;
+    let snapshotSize = overlay.clientWidth * ratio + 30;
     snapshotSquare = {
       x: ~~((video.videoWidth - snapshotSize) / 2),
       y: ~~((video.videoHeight - snapshotSize) / 2),
