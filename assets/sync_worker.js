@@ -197,6 +197,7 @@ function load_config(sheet_id, key) {
 
       // read events
       events = {};
+      event_groups = {};
       const parse_date = function (str) {
         const fs = str.split(/[-: ]/);
         if (fs.length != 6) {
@@ -211,29 +212,71 @@ function load_config(sheet_id, key) {
 
       for (let i = 0; i < evs.length; i++) {
         e = evs[i];
+        if (e.id === undefined) {
+          break;
+        }
         let c = -1;
         if (e.name in reg_cols) {
           c = reg_cols[e.name];
         } else {
           continue;
         }
-        events[e.id] = {
+        const eid = e.id.toLowerCase();
+        if (eid in events) {
+          throw "Duplicate event " + eid;
+        }
+        events[eid] = {
           col: c,
           name: e.name,
           start: parse_date(e.start),
           end: parse_date(e.end),
         };
+        event_groups[eid] = new Set([eid]);
       }
       console.log(events);
+
+      // read event groups
+      for (let i = 0; i < evs.length; i++) {
+        e = evs[i];
+        if (e.group === undefined) {
+          break;
+        }
+        const g = e.group.toLowerCase();
+        if (g in event_groups) {
+          throw "Duplicate event group " + g;
+        }
+        event_groups[g] = new Set();
+        const fs = e.events.toLowerCase().split(/[,; ]/);
+        if (fs.length <= 0) {
+          throw "No events for event group " + g;
+        }
+        for (let j = 0; j < fs.length; j++) {
+          const n = fs[j];
+          if (!(n in event_groups)) {
+            throw "Unrecognized event group " + n;
+          }
+          event_groups[g] = new Set([...event_groups[g], ...event_groups[n]]);
+        }
+      }
+      console.log(event_groups);
 
       // read people
       people = {};
       for (let i = 0; i < ps.length; i++) {
         p = ps[i];
+        const ts = p.tickets.toLowerCase().split(/[,; ]/);
+        let this_tickets = new Set();
+        for (let j = 0; j < ts.length; j++) {
+          const n = ts[j];
+          if (!(n in event_groups)) {
+            throw "Unrecognized event identifier " + n;
+          }
+          this_tickets = new Set([...this_tickets, ...event_groups[n]]);
+        }
         people[p.id] = {
           row: i + 1,
           name: p.first + " " + p.last,
-          tickets: p.tickets,
+          tickets: this_tickets,
         };
       }
       console.log(people);
