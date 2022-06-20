@@ -27,7 +27,6 @@
     "tests"
   ],
   "dependencies": {
-    "jsqrcode": "https://github.com/LazarSoft/jsqrcode.git",
     "material-design-lite": "^1.3.0"
   }
 }

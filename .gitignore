@@ -2,6 +2,7 @@
 /node_modules
 /app/service-worker.js
 /app/assets/sync_worker.js*
+/app/assets/qrcode_worker.js*
 /dist
 yarn.lock
 .publish

@@ -1,3 +1,5 @@
+const version = "v1";
+
 function load_json(key) {
   let val = localStorage.getItem(key);
   if (val != null) {
@@ -103,7 +105,7 @@ function apply_zoom() {
   }
 
   this.document.getElementById("zoom_val").innerText =
-    "Zoom: " + current_zoom.toFixed(1) + "x";
+    "zoom: " + current_zoom.toFixed(1) + "x";
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -251,7 +253,7 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function update_num_sync() {
-    tosync.innerText = "Pending sync: " + Object.keys(pending).length;
+    tosync.innerText = version + ", unsync: " + Object.keys(pending).length;
   }
 
   // global vars (not cached)
@@ -332,7 +334,7 @@ window.addEventListener("DOMContentLoaded", function () {
       ratio = video.videoWidth / video.clientWidth;
     }
 
-    let snapshotSize = overlay.clientWidth * ratio;
+    let snapshotSize = overlay.clientWidth * ratio + 30;
     snapshotSquare = {
       x: ~~((video.videoWidth - snapshotSize) / 2),
       y: ~~((video.videoHeight - snapshotSize) / 2),
@@ -383,10 +385,11 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function process_qr(e) {
-    const res = e.data;
+    const result = e.data;
 
     // open a dialog with the result if found
-    if (!loading && res !== false) {
+    if (!loading && result != null && result !== false) {
+      const res = result.data;
       // vibrate only if new result
       if (res != curr_result) {
         overlay.className = "white";
@@ -559,6 +562,7 @@ window.addEventListener("DOMContentLoaded", function () {
           zoom.addEventListener("pointerout", pointerup_handler);
           zoom.addEventListener("pointerleave", pointerup_handler);
 
+          zoom.style.touchAction = "none";
           apply_zoom();
         }
 

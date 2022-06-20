@@ -24,7 +24,6 @@ function getAssets(rootDir) {
     rootDir + "/assets/lib/material-design-lite/material.min.css.map",
     rootDir + "/assets/lib/material-design-lite/material.min.js",
     rootDir + "/assets/lib/material-design-lite/material.min.js.map",
-    rootDir + "/assets/lib/jsqrcode/src/**.js",
   ];
 }
 
@@ -48,7 +47,7 @@ gulp.task("clean", function () {
 function bundle(enable_debug) {
   return (
     gulp
-      .src("app/sync_worker.js", { read: false }) // no need of reading file because browserify does.
+      .src(["app/sync_worker.js", "app/qrcode_worker.js"], { read: false }) // no need of reading file because browserify does.
       // transform file objects using gulp-tap plugin
       .pipe(
         tap(function (file) {
