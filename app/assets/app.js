@@ -1,4 +1,4 @@
-const version = "v1.1";
+const version = "v1.2";
 
 function load_json(key) {
   let val = localStorage.getItem(key);
@@ -403,7 +403,7 @@ window.addEventListener("DOMContentLoaded", function () {
           navigator.vibrate(200);
         }
         curr_result = res;
-        var last_scan = Date.now();
+        last_scan = Date.now();
 
         // decide what to do with the result
         if (res.startsWith('{"key":')) {
