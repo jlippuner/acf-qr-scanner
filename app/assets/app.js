@@ -1,4 +1,4 @@
-const version = "v1";
+const version = "v1.1";
 
 function load_json(key) {
   let val = localStorage.getItem(key);
@@ -258,6 +258,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
   // global vars (not cached)
   var curr_result = "";
+  var last_scan = 0;
 
   // init QRCode Web Worker
   const qrcodeWorker = new Worker("assets/qrcode_worker.js");
@@ -390,8 +391,9 @@ window.addEventListener("DOMContentLoaded", function () {
     // open a dialog with the result if found
     if (!loading && result != null && result !== false) {
       const res = result.data;
-      // vibrate only if new result
-      if (res != curr_result) {
+
+      // process only if new result or it's been a while since last scan
+      if (res != curr_result || Date.now() - last_scan > 10 * 1000) {
         overlay.className = "white";
         setTimeout(function () {
           overlay.className = "black";
@@ -401,6 +403,7 @@ window.addEventListener("DOMContentLoaded", function () {
           navigator.vibrate(200);
         }
         curr_result = res;
+        var last_scan = Date.now();
 
         // decide what to do with the result
         if (res.startsWith('{"key":')) {
