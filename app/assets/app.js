@@ -1,4 +1,4 @@
-const version = "v1.2";
+const version = "v1.3";
 
 function load_json(key) {
   let val = localStorage.getItem(key);
@@ -475,18 +475,20 @@ window.addEventListener("DOMContentLoaded", function () {
       set_res(red, "SELECT EVENT", "");
       return;
     }
-    const event_id = parseInt(event_sel.value);
+    const event_id = event_sel.value;
     const event = events[event_id];
 
     let allowed = false;
 
     if (!(id in people)) {
       // this person doesn't exist
-      set_res(red, "UNKNOWN PERSON", "Please reload");
+      set_res(red, "UNKNOWN PERSON\nID " + id, "Please reload");
     } else {
       // we know this person
       p = people[id];
-      allowed = (p.tickets & (1 << event_id)) > 0;
+      try {
+        allowed = p.tickets.has(event_id);
+      } catch {}
       set_res(
         allowed ? green : red,
         p.name,
