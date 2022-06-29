@@ -1,4 +1,4 @@
-const version = "v1.3";
+const version = "v1.4";
 
 function load_json(key) {
   let val = localStorage.getItem(key);
