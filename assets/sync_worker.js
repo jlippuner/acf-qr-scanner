@@ -264,7 +264,15 @@ function load_config(sheet_id, key) {
       people = {};
       for (let i = 0; i < ps.length; i++) {
         p = ps[i];
-        const ts = p.tickets.toLowerCase().split(/[,; ]/);
+        if (isNaN(p.id)) {
+          // skip
+          continue;
+        }
+
+        let ts = [];
+        if (p.tickets !== undefined) {
+          ts = p.tickets.toLowerCase().split(/[,; ]/);
+        }
         let this_tickets = new Set();
         for (let j = 0; j < ts.length; j++) {
           const n = ts[j];
