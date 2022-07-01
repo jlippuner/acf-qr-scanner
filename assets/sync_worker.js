@@ -230,6 +230,7 @@ function load_config(sheet_id, key) {
           name: e.name,
           start: parse_date(e.start),
           end: parse_date(e.end),
+          single: e.name.toLowerCase().includes("single entry"),
         };
         event_groups[eid] = new Set([eid]);
       }
@@ -281,6 +282,18 @@ function load_config(sheet_id, key) {
           }
           this_tickets = new Set([...this_tickets, ...event_groups[n]]);
         }
+
+        // remove tickets for single events that are already recorded
+        this_tickets.forEach((e) => {
+          const ev = events[e];
+          if (ev.single) {
+            if (p[ev.name] !== undefined && p[ev.name].length > 10) {
+              console.log("Removed '", p[ev.name], "'");
+              this_tickets.delete(e);
+            }
+          }
+        });
+
         people[p.id] = {
           row: i + 1,
           name: p.first + " " + p.last,
