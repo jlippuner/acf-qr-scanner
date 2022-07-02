@@ -1,4 +1,4 @@
-const version = "v1.5";
+const version = "v1.6";
 
 function load_json(key) {
   let val = localStorage.getItem(key);
@@ -495,10 +495,10 @@ window.addEventListener("DOMContentLoaded", function () {
         "Entry " + (allowed ? "OK" : "DENIED")
       );
 
-      if (allowed && event.single) {
-        // remove ticket for this event
-        p.tickets.delete(event_id);
-      }
+      // if (allowed && event.single) {
+      //   // remove ticket for this event
+      //   p.tickets.delete(event_id);
+      // }
 
       const p0 = (num, places) => String(num).padStart(places, "0");
       const n = new Date();
